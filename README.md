@@ -108,3 +108,82 @@ This route is used to log in an existing user.
   }
 }
 ```
+
+### GET /users/profile
+
+This route is used to get the profile of the authenticated user.
+
+#### Headers
+
+- `Authorization` (string, required): The JWT token of the authenticated user.
+
+#### Response
+
+- `200 OK`: If the user profile is successfully retrieved.
+
+  - `user` (object): The authenticated user object.
+
+- `401 Unauthorized`: If the token is invalid or not provided.
+  - `message` (string): Error message indicating unauthorized access.
+
+#### Example
+
+**Request:**
+
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Response:**
+
+```json
+{
+  "user": {
+    "_id": "60c72b2f9b1e8a001c8e4b8a",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "password": "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Zf4a2a4b2b2b2b2b2b2b2",
+    "socketId": null
+  }
+}
+```
+
+### GET /users/logout
+
+This route is used to log out the authenticated user.
+
+#### Headers
+
+- `Authorization` (string, required): The JWT token of the authenticated user.
+
+#### Response
+
+- `200 OK`: If the user is successfully logged out.
+
+  - `message` (string): Success message indicating successful logout.
+
+- `400 Bad Request`: If there is an error during logout.
+  - `message` (string): Error message indicating the issue.
+
+#### Example
+
+**Request:**
+
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
