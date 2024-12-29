@@ -2,33 +2,36 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-const userSchema = new mongoose.Schema({
-  fullname: {
-    firstname: {
+const userSchema = new mongoose.Schema(
+  {
+    fullname: {
+      firstname: {
+        type: String,
+        required: true,
+        minlength: [3, "First name must be at least 3 characters long"],
+      },
+      lastname: {
+        type: String,
+        minlength: [3, "First name must be at least 3 characters long"],
+      },
+    },
+    email: {
       type: String,
       required: true,
-      minlength: [3, "First name must be at least 3 characters long"],
+      unique: true,
+      minlength: [5, "Email must be at least 5 characters long"],
     },
-    lastname: {
+    password: {
       type: String,
-      minlength: [3, "First name must be at least 3 characters long"],
+      required: true,
+      select: false, // so that when we fetch the user password will not there
+    },
+    socketId: {
+      type: String,
     },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    minlength: [5, "Email must be at least 5 characters long"],
-  },
-  password: {
-    type: String,
-    required: true,
-    select: false, // so that when we fetch the user password will not there
-  },
-  socketId: {
-    type: String,
-  },
-});
+  { timestamps: true }
+);
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
@@ -41,7 +44,8 @@ userSchema.methods.generateAuthToken = function () {
     {
       id: this._id,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
+    { expiresIn: 86400 }
   );
 };
 

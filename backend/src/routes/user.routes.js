@@ -1,6 +1,12 @@
 import express from "express";
 import { body } from "express-validator";
-import { login, register } from "../controllers/user.controller.js";
+import {
+  getProfile,
+  login,
+  logout,
+  register,
+} from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 // express-validator here on routes only check for the values we process it in the controller using validation Result
@@ -23,4 +29,7 @@ router.post(
   [body("email").isEmail().withMessage("Invalid email")],
   login
 );
+
+router.get("/profile", verifyJWT, getProfile);
+router.get("/logout", verifyJWT, logout);
 export default router;
