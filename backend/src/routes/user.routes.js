@@ -1,6 +1,6 @@
 import express from "express";
 import { body } from "express-validator";
-import { register } from "../controllers/user.controller.js";
+import { login, register } from "../controllers/user.controller.js";
 const router = express.Router();
 
 // express-validator here on routes only check for the values we process it in the controller using validation Result
@@ -16,5 +16,11 @@ router.post(
       .withMessage("Password must be at least 6 characters long"),
   ],
   register
+);
+
+router.post(
+  "/login",
+  [body("email").isEmail().withMessage("Invalid email")],
+  login
 );
 export default router;
