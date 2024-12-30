@@ -187,3 +187,82 @@ This route is used to log out the authenticated user.
   "message": "Logged out successfully"
 }
 ```
+
+### POST /captains/register
+
+This route is used to register a new captain.
+
+#### Request Body
+
+- `fullname`: An object containing:
+  - `firstname` (string, required): The first name of the captain. Must be at least 3 characters long.
+  - `lastname` (string, optional): The last name of the captain.
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain account. Must be at least 6 characters long.
+- `vehicle`: An object containing:
+  - `color` (string, required): The color of the vehicle. Must be at least 3 characters long.
+  - `plate` (string, required): The license plate of the vehicle. Must be at least 3 characters long.
+  - `capacity` (number, required): The capacity of the vehicle. Must be at least 1.
+  - `vehicleType` (string, required): The type of the vehicle. Must be one of "car", "motorcycle", or "auto".
+
+#### Response
+
+- `201 Created`: If the captain is successfully registered.
+
+  - `token` (string): The JWT token for the authenticated captain.
+  - `captain` (object): The created captain object.
+
+- `400 Bad Request`: If there are validation errors.
+  - `errors` (array): An array of validation error messages.
+
+#### Example
+
+**Request:**
+
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "60c72b2f9b1e8a001c8e4b8a",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "password": "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Zf4a2a4b2b2b2b2b2b2b2",
+    "vehicle": {
+      "color": "Red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "socketId": null,
+    "status": "inactive",
+    "location": {
+      "lat": null,
+      "lng": null
+    },
+    "createdAt": "2023-10-10T10:10:10.000Z",
+    "updatedAt": "2023-10-10T10:10:10.000Z"
+  }
+}
+```
