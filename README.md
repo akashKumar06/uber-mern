@@ -266,3 +266,160 @@ This route is used to register a new captain.
   }
 }
 ```
+
+### POST /captains/login
+
+This route is used to log in an existing captain.
+
+#### Request Body
+
+- `email` (string, required): The email address of the captain. Must be a valid email format.
+- `password` (string, required): The password for the captain account.
+
+#### Response
+
+- `200 OK`: If the captain is successfully logged in.
+
+  - `token` (string): The JWT token for the authenticated captain.
+  - `captain` (object): The authenticated captain object.
+
+- `400 Bad Request`: If there are validation errors.
+
+  - `errors` (array): An array of validation error messages.
+
+- `401 Unauthorized`: If the email or password is incorrect.
+  - `message` (string): Error message indicating invalid email or password.
+
+#### Example
+
+**Request:**
+
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "captain": {
+    "_id": "60c72b2f9b1e8a001c8e4b8a",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "password": "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Zf4a2a4b2b2b2b2b2b2b2",
+    "vehicle": {
+      "color": "Red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "socketId": null,
+    "status": "inactive",
+    "location": {
+      "lat": null,
+      "lng": null
+    },
+    "createdAt": "2023-10-10T10:10:10.000Z",
+    "updatedAt": "2023-10-10T10:10:10.000Z"
+  }
+}
+```
+
+### GET /captains/profile
+
+This route is used to get the profile of the authenticated captain.
+
+#### Headers
+
+- `Authorization` (string, required): The JWT token of the authenticated captain.
+
+#### Response
+
+- `200 OK`: If the captain profile is successfully retrieved.
+
+  - `captain` (object): The authenticated captain object.
+
+- `401 Unauthorized`: If the token is invalid or not provided.
+  - `message` (string): Error message indicating unauthorized access.
+
+#### Example
+
+**Request:**
+
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Response:**
+
+```json
+{
+  "captain": {
+    "_id": "60c72b2f9b1e8a001c8e4b8a",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "password": "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36Zf4a2a4b2b2b2b2b2b2b2",
+    "vehicle": {
+      "color": "Red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "socketId": null,
+    "status": "inactive",
+    "location": {
+      "lat": null,
+      "lng": null
+    },
+    "createdAt": "2023-10-10T10:10:10.000Z",
+    "updatedAt": "2023-10-10T10:10:10.000Z"
+  }
+}
+```
+
+### GET /captains/logout
+
+This route is used to log out the authenticated captain.
+
+#### Headers
+
+- `Authorization` (string, required): The JWT token of the authenticated captain.
+
+#### Response
+
+- `200 OK`: If the captain is successfully logged out.
+
+  - `message` (string): Success message indicating successful logout.
+
+- `400 Bad Request`: If there is an error during logout.
+  - `message` (string): Error message indicating the issue.
+
+#### Example
+
+**Request:**
+
+```json
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+**Response:**
+
+```json
+{
+  "message": "Captain logged out successfully."
+}
+```

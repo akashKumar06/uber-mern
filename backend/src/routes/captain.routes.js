@@ -1,6 +1,12 @@
 import express from "express";
-import { registerCaptain } from "../controllers/captain.controller.js";
+import {
+  getCaptain,
+  loginCaptain,
+  logout,
+  registerCaptain,
+} from "../controllers/captain.controller.js";
 import { body } from "express-validator";
+import { authCaptain } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 router.post(
@@ -28,4 +34,13 @@ router.post(
   ],
   registerCaptain
 );
+
+router.post(
+  "/login",
+  [body("email").isEmail().withMessage("Invalid email")],
+  loginCaptain
+);
+
+router.get("/profile", authCaptain, getCaptain);
+router.get("/logout", authCaptain, logout);
 export default router;
